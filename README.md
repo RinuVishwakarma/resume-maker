@@ -1,54 +1,112 @@
-# React + TypeScript + Vite
+# Resume Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, interactive web application for creating professional resumes with real-time preview and PDF export functionality.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📝 **Interactive Forms**: Easy-to-use forms for personal information, education, work experience, and skills
+- 👁️ **Real-time Preview**: See your changes instantly in the resume preview
+- 📄 **PDF Export**: Download your resume as a professional PDF
+- 🎨 **Modern UI**: Clean and professional design using Material-UI
+- 📱 **Responsive Design**: Works on desktop and mobile devices
+- 🔄 **Drag and Drop**: Reorder sections with drag and drop functionality
+- 🔗 **Clickable Links**: Social media and contact links are clickable in both web view and PDF
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React
+- TypeScript
+- Material-UI
+- react-beautiful-dnd (for drag and drop)
+- jsPDF (for PDF generation)
+- html2canvas (for PDF conversion)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/resume-maker.git
+cd resume-maker
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
 ```
+
+3. Start the development server:
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+4. Open [http://localhost:5173](http://localhost:5173) in your browser
+
+## Usage
+
+1. **Personal Information**
+   - Fill in your name, title, contact details
+   - Add social media links (LinkedIn, GitHub, Portfolio)
+
+2. **Education**
+   - Add your educational background
+   - Include degree, field of study, and dates
+
+3. **Work Experience**
+   - List your work history
+   - Add company details, position, and responsibilities
+
+4. **Skills**
+   - Add your technical and professional skills
+   - Skills are displayed as interactive tags
+
+5. **Preview and Export**
+   - Review your resume in real-time
+   - Download as PDF when ready
+
+## Project Structure
+
+```
+resume-maker/
+├── src/
+│   ├── components/
+│   │   ├── forms/
+│   │   │   ├── PersonalInfoForm.tsx
+│   │   │   ├── EducationForm.tsx
+│   │   │   ├── ExperienceForm.tsx
+│   │   │   └── SkillsForm.tsx
+│   │   ├── ResumePreview.tsx
+│   │   └── Sidebar.tsx
+│   ├── App.tsx
+│   └── main.tsx
+├── public/
+└── package.json
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Material-UI for the component library
+- react-beautiful-dnd for drag and drop functionality
+- jsPDF and html2canvas for PDF generation

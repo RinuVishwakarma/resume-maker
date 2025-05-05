@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Box,
   TextField,
@@ -6,9 +6,11 @@ import {
   IconButton,
   Typography,
   Paper,
+  Tooltip,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 interface Experience {
   id: string;
@@ -27,6 +29,7 @@ interface ExperienceFormProps {
 
 const ExperienceForm = ({ data, onUpdate }: ExperienceFormProps) => {
   const [experiences, setExperiences] = useState<Experience[]>(data);
+  const descriptionRefs = useRef<{ [key: string]: HTMLTextAreaElement | null }>({});
 
   useEffect(() => {
     setExperiences(data);
@@ -59,6 +62,67 @@ const ExperienceForm = ({ data, onUpdate }: ExperienceFormProps) => {
     const updatedExperiences = experiences.filter(exp => exp.id !== id);
     setExperiences(updatedExperiences);
     onUpdate(updatedExperiences);
+  };
+
+  const handleAddBulletPoint = (id: string) => {
+    const textarea = descriptionRefs.current[id];
+    if (textarea) {
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = experiences.find(exp => exp.id === id)?.description || '';
+      const newText = text.substring(0, start) + '• ' + text.substring(end);
+      
+      handleChange(id, 'description', newText);
+      
+      // Set cursor position after the bullet point
+      setTimeout(() => {
+        if (textarea) {
+          textarea.focus();
+          textarea.setSelectionRange(start + 2, start + 2);
+        }
+      }, 0);
+    }
+  };
+
+  const handleKeyDown = (id: string, e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const textarea = descriptionRefs.current[id];
+      if (textarea) {
+        const start = textarea.selectionStart;
+        const text = experiences.find(exp => exp.id === id)?.description || '';
+        
+        // Check if we're at the end of a line
+        const currentLine = text.substring(0, start).split('\n').pop() || '';
+        const isEndOfLine = start === text.length || text[start] === '\n';
+        
+        // If we're at the end of a line or the line is empty, add a new bullet point
+        if (isEndOfLine || currentLine.trim() === '•') {
+          const newText = text.substring(0, start) + '\n• ' + text.substring(start);
+          handleChange(id, 'description', newText);
+          
+          // Set cursor position after the new bullet point
+          setTimeout(() => {
+            if (textarea) {
+              textarea.focus();
+              textarea.setSelectionRange(start + 3, start + 3);
+            }
+          }, 0);
+        } else {
+          // If we're in the middle of a line, just add a new line
+          const newText = text.substring(0, start) + '\n' + text.substring(start);
+          handleChange(id, 'description', newText);
+          
+          // Set cursor position at the start of the new line
+          setTimeout(() => {
+            if (textarea) {
+              textarea.focus();
+              textarea.setSelectionRange(start + 1, start + 1);
+            }
+          }, 0);
+        }
+      }
+    }
   };
 
   return (
@@ -122,14 +186,31 @@ const ExperienceForm = ({ data, onUpdate }: ExperienceFormProps) => {
                 fullWidth
               />
             </Box>
-            <TextField
-              label="Description"
-              value={experience.description}
-              onChange={(e) => handleChange(experience.id, 'description', e.target.value)}
-              multiline
-              rows={4}
-              fullWidth
-            />
+            <Box sx={{ position: 'relative' }}>
+              <TextField
+                label="Description"
+                value={experience.description}
+                onChange={(e) => handleChange(experience.id, 'description', e.target.value)}
+                onKeyDown={(e) => handleKeyDown(experience.id, e)}
+                multiline
+                rows={4}
+                fullWidth
+                inputRef={(el) => descriptionRefs.current[experience.id] = el}
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip title="Add bullet point">
+                      <IconButton
+                        size="small"
+                        onClick={() => handleAddBulletPoint(experience.id)}
+                        sx={{ position: 'absolute', right: 8, top: 8 }}
+                      >
+                        <FormatListBulletedIcon />
+                      </IconButton>
+                    </Tooltip>
+                  ),
+                }}
+              />
+            </Box>
           </Box>
         </Paper>
       ))}

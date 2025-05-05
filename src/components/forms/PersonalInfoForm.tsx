@@ -68,7 +68,7 @@ const PersonalInfoForm = ({ data, onUpdate }: PersonalInfoFormProps) => {
           />
           <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
             <TextField
-              label="Email"
+              label="Emailss"
               type="email"
               value={formData.email}
               onChange={(e) => handleChange('email', e.target.value)}
